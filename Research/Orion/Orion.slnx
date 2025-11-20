@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/Orleans/">
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Analyzers/Orleans.Analyzers.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Client/Orleans.Client.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.CodeGenerator/Orleans.CodeGenerator.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Core.Abstractions/Orleans.Core.Abstractions.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Core/Orleans.Core.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Persistence.Memory/Orleans.Persistence.Memory.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Reminders/Orleans.Reminders.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Runtime/Orleans.Runtime.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Sdk/Orleans.Sdk.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Serialization.Abstractions/Orleans.Serialization.Abstractions.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Serialization/Orleans.Serialization.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Server/Orleans.Server.csproj" />
+    <Project Path="Sources/Libs/Orleans/src/Orleans.Streaming/Orleans.Streaming.csproj" />
+  </Folder>
+  <Project Path="Sources/Orion.Console/Orion.Console.csproj" />
+  <Project Path="Sources/Orion.Core/Orion.Core.csproj" />
+</Solution>

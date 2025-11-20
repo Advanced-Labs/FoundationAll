@@ -1,0 +1,21 @@
+<Project>
+  <!--
+    Orion workspace build configuration
+    This file overrides build settings for all projects in the Orion folder,
+    including Orleans submodule projects when built as part of this solution.
+  -->
+
+  <PropertyGroup>
+    <!--
+      Orleans has TreatWarningsAsErrors=true which is too strict for development.
+      Override it here so NuGet warnings don't block builds.
+    -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+
+    <!--
+      Also suppress the NU1507 warning about package source mapping.
+      Orleans has this properly configured but the warning still appears.
+    -->
+    <NoWarn>$(NoWarn);NU1507</NoWarn>
+  </PropertyGroup>
+</Project>
