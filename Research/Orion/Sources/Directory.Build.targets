@@ -1,0 +1,20 @@
+<Project>
+  <!--
+    Global build configuration for Orleans code generation.
+    Projects that set OrleansBuildTimeCodeGen=true will automatically
+    get Orleans.CodeGenerator and Orleans.Analyzers as analyzers.
+  -->
+
+  <ItemGroup Condition="'$(OrleansBuildTimeCodeGen)' == 'true'">
+    <!-- Add Orleans code generator as an analyzer -->
+    <ProjectReference Include="$(MSBuildThisFileDirectory)Libs\Orleans\src\Orleans.CodeGenerator\Orleans.CodeGenerator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+
+    <!-- Add Orleans analyzers -->
+    <ProjectReference Include="$(MSBuildThisFileDirectory)Libs\Orleans\src\Orleans.Analyzers\Orleans.Analyzers.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Orion.DynamicKvGrains</RootNamespace>
+
+    <!-- Enable Orleans build-time code generation for this assembly -->
+    <OrleansBuildTimeCodeGen>true</OrleansBuildTimeCodeGen>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Mirror the Orleans references from Orion.Core, but without Raven provider -->
+    <ProjectReference Include="..\Libs\Orleans\src\Orleans.Runtime\Orleans.Runtime.csproj" />
+    <ProjectReference Include="..\Libs\Orleans\src\Orleans.Server\Orleans.Server.csproj" />
+    <ProjectReference Include="..\Libs\Orleans\src\Orleans.Sdk\Orleans.Sdk.csproj" />
+  </ItemGroup>
+</Project>
