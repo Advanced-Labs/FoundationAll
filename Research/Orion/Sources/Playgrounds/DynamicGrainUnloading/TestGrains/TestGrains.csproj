@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Enable Orleans build-time code generation for this assembly -->
+    <OrleansBuildTimeCodeGen>true</OrleansBuildTimeCodeGen>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference the Orleans SDK from the modified Orleans repo -->
+    <ProjectReference Include="..\..\..\Libs\Orleans\src\Orleans.Sdk\Orleans.Sdk.csproj" />
+  </ItemGroup>
+</Project>
