@@ -43,13 +43,11 @@ jobs:
 
           # Check if there are changes to commit
           if ! git diff --cached --quiet; then
-            git commit -m "Flatten submodules for FoundationAll
-
-This is an automated sync from Foundation repository.
-All submodules have been flattened into the main tree for AI tool compatibility.
-
-Source: https://github.com/Advanced-Labs/Foundation
-Commit: ${{ github.sha }}"
+            git commit -m "Flatten submodules for FoundationAll" \
+                       -m "This is an automated sync from Foundation repository." \
+                       -m "All submodules have been flattened into the main tree for AI tool compatibility." \
+                       -m "Source: https://github.com/Advanced-Labs/Foundation" \
+                       -m "Commit: ${{ github.sha }}"
           else
             echo "No changes to commit"
           fi
