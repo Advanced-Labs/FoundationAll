@@ -56,11 +56,11 @@ Commit: ${{ github.sha }}"
 
       - name: Push to FoundationAll
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          # Add FoundationAll as remote
-          git remote add foundationall https://x-access-token:${GITHUB_TOKEN}@github.com/Advanced-Labs/FoundationAll.git
+          # Add FoundationAll as remote using PAT
+          git remote add foundationall https://x-access-token:${GH_TOKEN}@github.com/Advanced-Labs/FoundationAll.git
 
           # Force push to FoundationAll on the same branch name
           # This will create the branch if it doesn't exist, or update it if it does
