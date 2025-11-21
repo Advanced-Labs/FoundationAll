@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -6,6 +6,24 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Orion.Core</RootNamespace>
+
+    <!-- Enable Orleans build-time code generation -->
+    <OrleansBuildTimeCodeGen>true</OrleansBuildTimeCodeGen>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Custom Orleans fork projects -->
+    <ProjectReference Include="..\Libs\Orleans\src\Orleans.Runtime\Orleans.Runtime.csproj" />
+    <ProjectReference Include="..\Libs\Orleans\src\Orleans.Server\Orleans.Server.csproj" />
+    <ProjectReference Include="..\Libs\Orleans\src\Orleans.Sdk\Orleans.Sdk.csproj" />
+
+    <!-- RavenDB provider for Orleans -->
+    <ProjectReference Include="..\Libs\Orleans\src\Orleans.Providers.RavenDB\Orleans.Providers.RavenDB.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Lamar DI integration -->
+    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="13.0.1" />
+  </ItemGroup>
 
 </Project>
