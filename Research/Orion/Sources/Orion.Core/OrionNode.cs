@@ -1,17 +1,18 @@
 using System.Net;
-using Lamar.Microsoft.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using Orleans.Runtime;
 using Orleans.Runtime.DynamicGrains;
+using Orleans.Providers.RavenDb.StorageProviders;
 
 namespace Orion.Core;
 
 /// <summary>
-/// Orion node - hosts an Orleans silo with Lamar DI integration
+/// Orion node - hosts an Orleans silo with default Microsoft DI
 /// </summary>
 public class OrionNode
 {
@@ -20,16 +21,11 @@ public class OrionNode
 
     public OrionNode(string[] args)
     {
-        var builder = Host.CreateApplicationBuilder(args);
+        var builder = Host.CreateDefaultBuilder(args);
 
-        // Integrate Lamar as the DI container
-        builder.Host.UseLamar();
-
+        // Use default Microsoft.Extensions.DependencyInjection container
         // Configure Orleans silo
-        builder.Host.UseOrleans((context, siloBuilder) =>
-        {
-            ConfigureOrleans(siloBuilder);
-        });
+        builder.UseOrleans(ConfigureOrleans);
 
         _host = builder.Build();
         _logger = _host.Services.GetRequiredService<ILogger<OrionNode>>();
@@ -37,42 +33,13 @@ public class OrionNode
 
     private void ConfigureOrleans(ISiloBuilder silo)
     {
-        // Cluster configuration
-        silo.Configure<ClusterOptions>(opts =>
-        {
-            opts.ClusterId = "orion-dev";
-            opts.ServiceId = "Orion";
-        });
-
-        // Endpoint configuration
-        silo.Configure<EndpointOptions>(opts =>
-        {
-            opts.AdvertisedIPAddress = IPAddress.Loopback;
-            opts.SiloPort = 11111;
-            opts.GatewayPort = 30000;
-        });
-
-        // RavenDB membership (Batch #3 requirement)
-        // Note: If RavenDB membership has compatibility issues similar to reminders,
-        // this can be reverted to UseLocalhostClustering
-        try
-        {
-            silo.UseRavenDbMembershipTable(options =>
-            {
-                options.Urls = new[] { "http://127.0.0.1:38880" };
-                options.DatabaseName = "Orion";
-            });
-        }
-        catch (Exception)
-        {
-            // Fallback to localhost clustering if RavenDB membership fails
-            _logger?.LogWarning("RavenDB membership configuration failed, falling back to localhost clustering");
-            silo.UseLocalhostClustering(
-                siloPort: 11111,
-                gatewayPort: 30000,
-                serviceId: "Orion",
-                clusterId: "orion-dev");
-        }
+        // Localhost clustering for development
+        silo.UseLocalhostClustering(
+            siloPort: 11111,
+            gatewayPort: 30000,
+            primarySiloEndpoint: null,
+            serviceId: "Orion",
+            clusterId: "orion-dev");
 
         // RavenDB grain storage
         silo.AddRavenDbGrainStorage("OrionStore", options =>
@@ -81,12 +48,13 @@ public class OrionNode
             options.DatabaseName = "Orion";
         });
 
-        // In-memory reminders (Batch #3 requirement)
-        // RavenDB reminders are known to be incompatible with Orleans 9.1
-        silo.UseInMemoryReminderService();
+        // NOTE: Reminders are intentionally disabled for now.
+        // The current Orleans fork has incompatible GrainService constructor
+        // changes that break both RavenDB and in-memory reminder implementations.
+        // We'll revisit reminders in a dedicated batch once the fork is aligned.
 
         // Dynamic grain loading (Batch #3 requirement)
-        silo.AddDynamicGrainLoading();
+        DynamicGrainLoadingExtensions.AddDynamicGrainLoading(silo);
     }
 
     /// <summary>

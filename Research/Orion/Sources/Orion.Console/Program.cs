@@ -1,4 +1,6 @@
 using System.CommandLine;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Orleans;
 using Orleans.Hosting;
 using Orion.Core;
@@ -80,6 +82,34 @@ internal class Program
     }
 
     /// <summary>
+    /// Helper to run code with an Orleans client
+    /// </summary>
+    private static async Task RunWithClientAsync(Func<IClusterClient, Task> work)
+    {
+        using var host = Host.CreateDefaultBuilder()
+            .UseOrleansClient(client =>
+            {
+                client.UseLocalhostClustering(
+                    gatewayPort: 30000,
+                    serviceId: "Orion",
+                    clusterId: "orion-dev");
+            })
+            .Build();
+
+        await host.StartAsync();
+
+        try
+        {
+            var client = host.Services.GetRequiredService<IClusterClient>();
+            await work(client);
+        }
+        finally
+        {
+            await host.StopAsync();
+        }
+    }
+
+    /// <summary>
     /// Runs the Orion node (silo)
     /// </summary>
     private static async Task RunNodeAsync(string[] args)
@@ -107,26 +137,16 @@ internal class Program
 
         try
         {
-            var clientBuilder = new ClientBuilder()
-                .UseLocalhostClustering(
-                    gatewayPort: 30000,
-                    serviceId: "Orion",
-                    clusterId: "orion-dev");
+            await RunWithClientAsync(async client =>
+            {
+                var pingGrain = client.GetGrain<IPingGrain>(key);
+                var response = await pingGrain.PingAsync(message);
 
-            using var client = clientBuilder.Build();
+                System.Console.WriteLine($"Response: {response}");
 
-            System.Console.WriteLine("Connecting to Orion cluster...");
-            await client.Connect();
-
-            var pingGrain = client.GetGrain<IPingGrain>(key);
-            var response = await pingGrain.PingAsync(message);
-
-            System.Console.WriteLine($"Response: {response}");
-
-            var count = await pingGrain.GetPingCountAsync();
-            System.Console.WriteLine($"Total ping count: {count}");
-
-            await client.Close();
+                var count = await pingGrain.GetPingCountAsync();
+                System.Console.WriteLine($"Total ping count: {count}");
+            });
         }
         catch (Exception ex)
         {
@@ -146,34 +166,24 @@ internal class Program
 
         try
         {
-            var clientBuilder = new ClientBuilder()
-                .UseLocalhostClustering(
-                    gatewayPort: 30000,
-                    serviceId: "Orion",
-                    clusterId: "orion-dev");
-
-            using var client = clientBuilder.Build();
-
-            System.Console.WriteLine("Connecting to Orion cluster...");
-            await client.Connect();
-
-            var kvGrain = client.GetGrain<IKvGrain>(key);
-
-            if (value is not null)
+            await RunWithClientAsync(async client =>
             {
-                await kvGrain.SetAsync(value);
-                System.Console.WriteLine($"Set key '{key}' to '{value}'");
-            }
-            else
-            {
-                var current = await kvGrain.GetAsync();
-                System.Console.WriteLine(
-                    current is null
-                        ? $"Key '{key}' has no value (null)."
-                        : $"Value for key '{key}': {current}");
-            }
+                var kvGrain = client.GetGrain<IKvGrain>(key);
 
-            await client.Close();
+                if (value is not null)
+                {
+                    await kvGrain.SetAsync(value);
+                    System.Console.WriteLine($"Set key '{key}' to '{value}'");
+                }
+                else
+                {
+                    var current = await kvGrain.GetAsync();
+                    System.Console.WriteLine(
+                        current is null
+                            ? $"Key '{key}' has no value (null)."
+                            : $"Value for key '{key}': {current}");
+                }
+            });
         }
         catch (Exception ex)
         {

@@ -16,14 +16,13 @@
     <ProjectReference Include="..\Libs\Orleans\src\Orleans.Runtime\Orleans.Runtime.csproj" />
     <ProjectReference Include="..\Libs\Orleans\src\Orleans.Server\Orleans.Server.csproj" />
     <ProjectReference Include="..\Libs\Orleans\src\Orleans.Sdk\Orleans.Sdk.csproj" />
-
-    <!-- RavenDB provider for Orleans -->
-    <ProjectReference Include="..\Libs\Orleans\src\Orleans.Providers.RavenDB\Orleans.Providers.RavenDB.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Lamar DI integration -->
-    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="13.0.1" />
+    <!-- NuGet packages -->
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Orleans.Providers.RavenDB" Version="1.0.3" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,14 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Orion.Console</RootNamespace>
     <AssemblyName>ocon</AssemblyName>
+
+    <!-- Enable Orleans codegen for client so grain reference activators are generated -->
+    <OrleansBuildTimeCodeGen>true</OrleansBuildTimeCodeGen>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="nul" />
+  </ItemGroup>
 
   <ItemGroup>
     <!-- Orleans client -->
