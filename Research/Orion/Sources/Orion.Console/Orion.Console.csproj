@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,11 +6,27 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Orion.Console</RootNamespace>
+    <AssemblyName>ocon</AssemblyName>
+
+    <!-- Enable Orleans codegen for client so grain reference activators are generated -->
+    <OrleansBuildTimeCodeGen>true</OrleansBuildTimeCodeGen>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="nul" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Orleans client -->
+    <ProjectReference Include="..\Libs\Orleans\src\Orleans.Client\Orleans.Client.csproj" />
     <ProjectReference Include="..\Libs\Orleans\src\Orleans.Server\Orleans.Server.csproj" />
+
+    <!-- Orion projects -->
     <ProjectReference Include="..\Orion.Core\Orion.Core.csproj" />
+    <ProjectReference Include="..\Orion.DynamicKvGrains\Orion.DynamicKvGrains.csproj" />
+
+    <!-- System.CommandLine for CLI parsing -->
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
   </ItemGroup>
 
 </Project>

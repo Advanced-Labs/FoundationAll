@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Grains/">
+    <Project Path="Sources/Orion.DynamicKvGrains/Orion.DynamicKvGrains.csproj" />
+  </Folder>
   <Folder Name="/Orleans/">
     <Project Path="Sources/Libs/Orleans/src/Orleans.Analyzers/Orleans.Analyzers.csproj" />
     <Project Path="Sources/Libs/Orleans/src/Orleans.Client/Orleans.Client.csproj" />

@@ -1,28 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <OutputType>Library</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Orion.Core</RootNamespace>
+    <RootNamespace>Orion.DynamicKvGrains</RootNamespace>
 
-    <!-- Enable Orleans build-time code generation -->
+    <!-- Enable Orleans build-time code generation for this assembly -->
     <OrleansBuildTimeCodeGen>true</OrleansBuildTimeCodeGen>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Custom Orleans fork projects -->
+    <!-- Mirror the Orleans references from Orion.Core, but without Raven provider -->
     <ProjectReference Include="..\Libs\Orleans\src\Orleans.Runtime\Orleans.Runtime.csproj" />
     <ProjectReference Include="..\Libs\Orleans\src\Orleans.Server\Orleans.Server.csproj" />
     <ProjectReference Include="..\Libs\Orleans\src\Orleans.Sdk\Orleans.Sdk.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <!-- NuGet packages -->
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
-    <PackageReference Include="Orleans.Providers.RavenDB" Version="1.0.3" />
-  </ItemGroup>
-
 </Project>
