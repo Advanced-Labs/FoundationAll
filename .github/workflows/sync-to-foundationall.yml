@@ -1,10 +1,7 @@
-name: Sync-to-FoundationAll
+name: Sync to FoundationAll
 
 on:
-  push:
-    branches:
-      - main
-      - 'v/**'  # Matches all branches starting with v/ (like v/0.0.2)
+  push:  # Triggers on push to ANY branch
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
@@ -71,4 +68,3 @@ jobs:
           echo "ðŸ“¦ Repository: https://github.com/Advanced-Labs/FoundationAll"
           echo "ðŸŒ¿ Branch: ${{ github.ref_name }}"
           echo "ðŸ“ Commit: ${{ github.sha }}"
-
