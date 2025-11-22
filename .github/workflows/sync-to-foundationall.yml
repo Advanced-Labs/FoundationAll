@@ -17,6 +17,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+          persist-credentials: true
           token: ${{ secrets.PAT_TOKEN }}
 
       - name: Configure Git
@@ -66,7 +67,7 @@ jobs:
 
       - name: Summary
         run: |
-          echo "✅ Successfully synced to FoundationAll"
-          echo "📦 Repository: https://github.com/Advanced-Labs/FoundationAll"
-          echo "🌿 Branch: ${{ github.ref_name }}"
-          echo "📝 Commit: ${{ github.sha }}"
+          echo "âœ… Successfully synced to FoundationAll"
+          echo "ðŸ“¦ Repository: https://github.com/Advanced-Labs/FoundationAll"
+          echo "ðŸŒ¿ Branch: ${{ github.ref_name }}"
+          echo "ðŸ“ Commit: ${{ github.sha }}"
