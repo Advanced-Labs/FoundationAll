@@ -1,9 +1,7 @@
 name: Sync to FoundationAll
 
 # Triggers on push to any branch and allows manual triggering
-on:
-  push:
-  workflow_dispatch:
+on: [push, workflow_dispatch]
 
 jobs:
   sync:
