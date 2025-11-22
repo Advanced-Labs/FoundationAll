@@ -63,7 +63,7 @@ jobs:
 
       - name: Summary
         run: |
-          echo "âœ… Successfully synced to FoundationAll"
-          echo "ðŸ“¦ Repository: https://github.com/Advanced-Labs/FoundationAll"
-          echo "ðŸŒ¿ Branch: ${{ github.ref_name }}"
-          echo "ðŸ“ Commit: ${{ github.sha }}"
+          echo "Successfully synced to FoundationAll"
+          echo "Repository: https://github.com/Advanced-Labs/FoundationAll"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
