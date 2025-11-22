@@ -1,4 +1,4 @@
-name: Sync to FoundationAll
+name: Sync-to-FoundationAll
 
 on:
   push:
@@ -71,3 +71,4 @@ jobs:
           echo "ðŸ“¦ Repository: https://github.com/Advanced-Labs/FoundationAll"
           echo "ðŸŒ¿ Branch: ${{ github.ref_name }}"
           echo "ðŸ“ Commit: ${{ github.sha }}"
+
