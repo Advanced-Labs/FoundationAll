@@ -1,0 +1,70 @@
+name: Sync to FoundationAll
+
+on:
+  push:  # Triggers on push to ANY branch
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Foundation with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+          persist-credentials: true
+          token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+
+      - name: Flatten submodules
+        run: |
+          # Remove .gitmodules file
+          rm -f .gitmodules
+
+          # For each submodule, remove its .git directory to make it a regular directory
+          find . -name ".git" -type f -o -name ".git" -type d | while read gitpath; do
+            # Skip the root .git
+            if [ "$gitpath" != "./.git" ]; then
+              echo "Removing $gitpath"
+              rm -rf "$gitpath"
+            fi
+          done
+
+          # Stage all changes
+          git add -A
+
+          # Check if there are changes to commit
+          if ! git diff --cached --quiet; then
+            git commit -m "Flatten submodules for FoundationAll" \
+                       -m "This is an automated sync from Foundation repository." \
+                       -m "All submodules have been flattened into the main tree for AI tool compatibility." \
+                       -m "Source: https://github.com/Advanced-Labs/Foundation" \
+                       -m "Commit: ${{ github.sha }}"
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Push to FoundationAll
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          # Add FoundationAll as remote using PAT
+          git remote add foundationall https://x-access-token:${GH_TOKEN}@github.com/Advanced-Labs/FoundationAll.git
+
+          # Force push to FoundationAll on the same branch name
+          # This will create the branch if it doesn't exist, or update it if it does
+          git push foundationall ${BRANCH_NAME} --force
+
+      - name: Summary
+        run: |
+          echo "âœ… Successfully synced to FoundationAll"
+          echo "ðŸ“¦ Repository: https://github.com/Advanced-Labs/FoundationAll"
+          echo "ðŸŒ¿ Branch: ${{ github.ref_name }}"
+          echo "ðŸ“ Commit: ${{ github.sha }}"
